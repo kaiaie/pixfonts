@@ -18,6 +18,16 @@ fonts are supported for now, and only characters in the Basic Latin (i.e., 7-bit
 ASCII) range are handled. An HTML/ JavaScript test script is included to test
 the created font.
 
+## File structure
+
+The project is laid out as follows:
+
+- `test`: Contains the test harness
+- `basic`: A basic, no-frills pixel font
+  - `basic/8x8`: The 8x8 size of the font
+    - `basic/8x8/glyphs`: The font files, one for each glyph.
+    - `basic/8x8/by-name`: A symlink to each glyph with a human-readable name.
+
 ## Prerequisites
 
 - GNU Make (the Makefile uses the `addprefix` function that not all variants of
