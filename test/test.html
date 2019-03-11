@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<title>Test Page</title>
+	</head>
+	<body>
+		<canvas id="canvas1">
+			Canvas not supported in this browser.
+		</canvas>
+		<form id="form1">
+			<p>
+				<input id="text1" name="text1" type="text" placeholder="Enter text to render here">
+			</p>
+			<p>
+				<button id="btnRender" type="button">Render</button> 
+				<button id="btnClear" type="button">Clear</button>
+			</p>
+		</form>
+<img id="pixfont" style="display:none" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAAAwAQAAAADxj08TAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAd2KE6QAAAAHdElNRQfjAwsQMwbNi10oAAABuUlEQVQoz4WSwYrbMBCG59WFDn2GsoScclqWnEIJZlYYsZiecgpmMUIEsehgzGBCEYsQ05GSUkhLOwfb+jT/r9F4gCWIfwcwjVO/8ZR8W5cK1P5pTzUEZAE8Wdkmeia2nBpY6FnAoKsdyEPp928tI3L0LYOO3zl5ohNHA/wQj0CDJa2z+uyt5djqOJ5KuZpYEGPM1hQ4kO1n/ZQtRk7sr/BCpkwFM77XOxHBRoAqmEQRk/UMdlA6a5vsNp4yG/pXHcMN2PjFaqUsDjQZRAsYO0Qjn0Sj+bpBwEkb1NoouZvZvSB8TGgk49gy8IBwVniX7MXjiGBRi6npcdg6VU3/1w8GEfQau9euU9GciKFakoCxy+RpbMASjmcaU/tVoA+6VDDKMlVgOhRAcyeC3MAbarIVqFhOfx4LQI8kSWsL5zo0bR6AVwol/FjbgMw2ABdyq0uL7M50dk4ygl/66xKI4g0si1t8WhcR3DMuYQ2pLAPN8ezCrzquzP5v/Rhv4F5cIj8rCOvlMjj36lxfr4+wLN6TgNnlLV15V0EgN5/TpTVoJxJfKpgL3SRUvI2XNLvSiykrAfcTw+31E39AqEZh/vvsAAAAAElFTkSuQmCC">
+		<script>
+			var pixfont;
+			var canvas;
+			var x = 0;
+			const pixfontWidth = 8;
+			const pixfontHeight = 8;
+
+			function renderText() {
+				var text1 = document.getElementById("text1"),
+				    textVal = text1 ? text1.value : "";
+				if (textVal.length === 0) {
+					return;
+				}
+				var ctx = canvas.getContext("2d");
+				for (var i = 0; i < textVal.length; ++i) {
+					var codePoint = textVal.codePointAt(i);
+					// Only code points in the Basic Latin
+					// range supported
+					if (codePoint < 32 || codePoint > 127) {
+						codePoint = 127;
+					}
+					codePoint -= 32;
+					// The glyphs are stored in a bitmap of
+					// 6 rows x 16 columns; the offsets can
+					// be found by converting the code point
+					// value to hex and taking the most- and
+					// least-significant digits
+					var row = Math.floor(codePoint / 16);
+					var col = codePoint - (row * 16);
+					
+					ctx.drawImage(pixfont,
+						col * pixfontWidth, 
+						row * pixfontHeight,
+						pixfontWidth,
+						pixfontHeight,
+						x,
+						0,
+						pixfontWidth,
+						pixfontHeight
+					);
+					x += pixfontWidth;
+				}
+			}
+
+
+			function clearText() {
+				x = 0;
+				var ctx = canvas.getContext("2d");
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+			}
+
+
+			window.addEventListener("load", function () {
+				pixfont =
+					document.getElementById("pixfont");
+				var canvas1 = document.getElementById("canvas1");
+				if (canvas1 && canvas1.getContext) {
+					canvas = canvas1;
+				} else {
+					// Canvas context not found, canvas
+					// likely not supported by this browser
+					var form1 =
+						document.getElementById("form1");
+					if (form1) {
+						form1.style.display = "none;"
+					}
+					return;
+				}
+				var btnRender =
+					document.getElementById("btnRender");
+				if (btnRender) {
+					btnRender.addEventListener("click", renderText);
+				}
+				var btnClear =
+					document.getElementById("btnClear");
+				if (btnClear) {
+					btnClear.addEventListener("click", clearText);
+				}
+			});
+		</script>
+	</body>
+</html>
