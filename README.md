@@ -30,8 +30,8 @@ The project is laid out as follows:
 
 ## Prerequisites
 
-- GNU Make (the Makefile uses the `addprefix` function that not all variants of
-  `make` support
+- GNU Make (the Makefile uses the `addprefix` function and order-only
+  pre-requisites that not all variants of `make` support)
 - ImageMagick (note: this project was created on Devuan Linux which uses a
   somewhat old version of ImageMagick, dated 2009. Perusal of the ImageMagick
   Web site suggests some of the command-line arguments may have changed on newer

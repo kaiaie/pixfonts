@@ -8,13 +8,15 @@ all: $(OUT)
 
 # FIXME: The -tile option seems to have changed in recent versions of
 # ImageMagick; works for now in Devuan Linux
-$(OUT): $(GLYPHS)
+$(OUT): $(GLYPHS) | out/
 	montage $^ -tile 16x6 -geometry +0+0 $@
 
 
 clean:
 	rm -f $(OUT)
 
+out/:
+	mkdir -p out/
 
 .PHONY: all clean
 	
