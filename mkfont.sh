@@ -87,6 +87,7 @@ do
 		cp "${font_dir}/glyphs/20.pbm" "${font_dir}/glyphs/${code_point}.pbm"
 	fi
 	# Create a symlink with the human name for each glyph so it's easier to edit
+	name=$(echo "${name}" | tr [:space:] _)
 	ln -s "../glyphs/${code_point}.pbm" "${font_dir}/by-name/${code_point}-${name}.pbm"
 	line_no=$(expr $line_no + 1)
 done < basic_latin.csv
